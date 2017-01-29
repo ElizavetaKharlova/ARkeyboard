@@ -36,15 +36,6 @@ while True:
         cv2.rectangle(img, (start_key[0]+hor*50,start_key[1]+vert*50), (finish_key[0]+hor*50,finish_key[1]+vert*50), (255,255,255), 3)
         cv2.putText(img, letter, (start_key[0]+20+hor*50,start_key[1]+20+vert*50), font, 0.5, (200,255,255), 1, cv2.LINE_AA)
 
-    def button(num, let):
-        if not np.all(opening[125,125+num*50] == [0,0,0]): #button pressed
-            cv2.rectangle(opening, (100+num*50,100), (150+num*50,150), (255,255,255), -1)
-            cv2.putText(opening, let, (0+num*30,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
-            pixel[num] = True;
-        #checking if the button WAS pressed
-        if pixel[num] == True:
-            cv2.putText(opening, let, (0+num*30,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
-
 
     def is_it_pressed():
         let = '0'
