@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib
 
 cap = cv2.VideoCapture(0)
-pixel = np.zeros((5), dtype = bool)
 type_word = ' '
 i = 0
 start_key = (900, 100)
@@ -16,26 +15,27 @@ arr_let2 = ('A','S','D','F','G','H','J','K','L','.')
 arr_let3 = ('Z','X','C','V','B','N','M',' ','!','?')
 
 while True:
+    # capture and process the frame
     ret, image = cap.read()
     img = image.copy()
     img = cv2.flip(img,1)
     gray  = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
     ret1, thresh = cv2.threshold(gray, 115, 255, cv2.THRESH_BINARY)
     kernel = np.ones((3,3),np.uint8)
     opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN, kernel, iterations = 3)
-    # sure background area
     font = cv2.FONT_HERSHEY_COMPLEX
     
+    # Draw a button on the threshlod frame
     def put_button(hor, vert, letter):
         cv2.rectangle(opening, (start_key[0]+hor*50,start_key[1]+vert*50), (finish_key[0]+hor*50,finish_key[1]+vert*50), (255,255,255), 3)
         cv2.putText(opening, letter, (start_key[0]+20+hor*50,start_key[1]+20+vert*50), font, 0.5, (200,255,255), 1, cv2.LINE_AA)
     
+    # Draw a button on the colour frame
     def put_button_color(hor,vert,letter):
         cv2.rectangle(img, (start_key[0]+hor*50,start_key[1]+vert*50), (finish_key[0]+hor*50,finish_key[1]+vert*50), (255,255,255), 3)
         cv2.putText(img, letter, (start_key[0]+20+hor*50,start_key[1]+20+vert*50), font, 0.5, (200,255,255), 1, cv2.LINE_AA)
 
-
+    # Check which button is pressed
     def is_it_pressed():
         let = '0'
         for k in (1,2,3):
@@ -53,7 +53,7 @@ while True:
                         let = arr_let1[i]
 
         return let
-
+    # Draw a grid on the threshold frame
     put_button(-4,0,'Q')
     put_button(-3,0,'W')
     put_button(-2,0,'E')
@@ -85,7 +85,7 @@ while True:
     put_button(3,2,' ')
     put_button(4,2,'!')
     
-    
+    # Draw a grid on the colour frame
     put_button_color(-4,0,'Q')
     put_button_color(-3,0,'W')
     put_button_color(-2,0,'E')
@@ -119,17 +119,15 @@ while True:
     put_button_color(4,2,'!')
     put_button_color(5,2,'?')
 
-
+    # Wait and type the output
     lettr = is_it_pressed()
     if not lettr == '0':
         i = i + 1
         if (i > 25):
             type_word = type_word + lettr
             i = 0
-
+    
     cv2.putText(img, type_word, (900,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
-
-#cv2.imshow('opening',opening)
     cv2.imshow('img',img)
 
 
