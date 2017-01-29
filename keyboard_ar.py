@@ -119,7 +119,7 @@ while True:
     put_button_color(4,2,'!')
     put_button_color(5,2,'?')
 
-    # Wait and type the output
+    # Wait for a 25-frame delay and add the new key to the output
     lettr = is_it_pressed()
     if not lettr == '0':
         i = i + 1
