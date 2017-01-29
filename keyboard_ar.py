@@ -15,7 +15,7 @@ arr_let2 = ('A','S','D','F','G','H','J','K','L','.')
 arr_let3 = ('Z','X','C','V','B','N','M',' ','!','?')
 
 while True:
-    # capture and process the frame
+    # Capture and process the frame
     ret, image = cap.read()
     img = image.copy()
     img = cv2.flip(img,1)
