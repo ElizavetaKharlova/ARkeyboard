@@ -1,1 +1,0 @@
-git add skindetector.py
