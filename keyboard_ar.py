@@ -125,6 +125,8 @@ while True:
         i = i + 1
         if (i > 25):
             type_word = type_word + lettr
+            if len(type_word) > 15:
+                type_word = ' '
             i = 0
     
     cv2.putText(img, type_word, (900,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
