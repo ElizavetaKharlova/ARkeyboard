@@ -128,8 +128,11 @@ while True:
             i = 0
     
     cv2.putText(img, type_word, (900,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
-    cv2.imshow('img',img)
 
+    if not np.all(opening[125,1215] == [0,0,0]):
+        cv2.putText(img, 'Fuck you', (900,500), font, 1, (100,100,100), 2, cv2.LINE_AA)
+        
+    cv2.imshow('img',img)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
