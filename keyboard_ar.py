@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib
 
 cap = cv2.VideoCapture(0)
-last_frame = np.zeros((720, 1280, 3), np.uint8)
 pixel = np.zeros((5), dtype = bool)
 type_word = ' '
 i = 0
