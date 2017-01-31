@@ -7,6 +7,7 @@ type_word = ' '
 i = 0
 start_key = (900, 100)
 finish_key = (950,150)
+last_frame = np.ones((720, 1280, 3), np.uint8)
 arr1 = (0,1,2,3,4,5,6,7,8,9)
 arr2 = (0,1,2,3,4,5,6,7,8,9)
 arr3 = (0,1,2,3,4,5,6,7,8,9)
@@ -41,15 +42,15 @@ while True:
         for k in (1,2,3):
             if k == 1:
                 for i in arr3:
-                    if np.all(opening[225,725+i*50] != [0,0,0]):
+                    if np.all(opening[225,725+i*50] != last_frame[225,725+i*50]):
                         let = arr_let3[i]
             if k == 2:
                 for i in arr2:
-                    if np.all(opening[175,725+i*50] != [0,0,0]):
+                    if np.all(opening[175,725+i*50] != last_frame[175,725+i*50]):
                         let = arr_let2[i]
             if k == 3:
                 for i in arr1:
-                    if np.all(opening[125,725+i*50] != [0,0,0]):
+                    if np.all(opening[125,725+i*50] != last_frame[125,725+i*50]):
                         let = arr_let1[i]
 
         return let
@@ -132,6 +133,8 @@ while True:
     cv2.putText(img, type_word, (900,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
         
     cv2.imshow('img',img)
+    
+    last_frame = opening
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
