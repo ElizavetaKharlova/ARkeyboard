@@ -2,17 +2,28 @@ import cv2
 import numpy as np
 import matplotlib
 
+
+
+
 cap = cv2.VideoCapture(0)
-type_word = ' '
-i = 0
-start_key = (900, 100)
-finish_key = (950,150)
-arr1 = (0,1,2,3,4,5,6,7,8,9)
-arr2 = (0,1,2,3,4,5,6,7,8,9)
-arr3 = (0,1,2,3,4,5,6,7,8,9)
-arr_let1 = ('Q','W','E','R','T','Y','U','I','O','P')
-arr_let2 = ('A','S','D','F','G','H','J','K','L','.')
-arr_let3 = ('Z','X','C','V','B','N','M',' ','!','?')
+
+
+class keyboard:
+    type_word = ' '
+    i = 0
+    start_key = (900, 100)
+    finish_key = (950,150)
+    arr1 = (0,1,2,3,4,5,6,7,8,9)
+    arr2 = (0,1,2,3,4,5,6,7,8,9)
+    arr3 = (0,1,2,3,4,5,6,7,8,9)
+    arr_let1 = ('Q','W','E','R','T','Y','U','I','O','P')
+    arr_let2 = ('A','S','D','F','G','H','J','K','L','.')
+    arr_let3 = ('Z','X','C','V','B','N','M',' ','!','?')
+
+
+    def put_button(self.hor, self.vert, self.letter):
+        cv2.rectangle(opening, (start_key[0]+hor*50,start_key[1]+vert*50), (finish_key[0]+hor*50,finish_key[1]+vert*50), (255,255,255), 3)
+        cv2.putText(opening, letter, (start_key[0]+20+hor*50,start_key[1]+20+vert*50), font, 0.5, (200,255,255), 1, cv2.LINE_AA)
 #this could be all stored in a structre called keyboard
 #keyboard can have methods that would press the keys, insead of just having
 #them in defined global functions.

@@ -1,0 +1,63 @@
+class keyboard ()
+
+Constructors:
+  buttons
+  display
+
+Methods:
+  Private:
+
+  Public:
+    push button
+    display key press
+    newline
+    move keyboard
+
+Variables:
+
+
+######################################
+
+Class camera ()
+
+Constructors:
+  Camera initialization
+
+methods:
+  Private:
+    Camera video on
+    Camera image flip
+    Camera image grey
+
+  Public:
+
+
+Variables:
+
+
+
+####################################
+
+Class image_processor ()
+
+Constructors:
+
+methods:
+  Private:
+  laplacian
+  segmentor
+  Public:
+
+
+
+#####################################
+Class tracker ()
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Main()
+
+Call CAMERA
+Call KEYBOARD
+Call image_processor
