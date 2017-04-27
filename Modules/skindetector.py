@@ -3,6 +3,38 @@ import imutils
 import numpy as np
 import argparse
 import cv2
+import matplotlib
+
+
+class Calibratus_rex(object):
+    
+    def __init__(self,image_1, image_2,):#could also have other arguments in here for initializing)
+        self.first_im= image_1
+        self.second_im = image_2
+    
+        
+    
+    
+    def conig_button(image_1,image_2):
+     cv2.rectangle(image_1,(900,100), (950,150), (255,255,255), 3)
+     cv2.rectangle(image_2,(900,100), (950,150), (255,255,255), 3)
+    
+    def Get_pixle_value(HSV_image):
+    #this is the function to return your hsv value 
+        while True 
+        #this is where we sample the pixel 
+        self.HSV_calc=HSV_image[925,125]
+        print("the pixel value is:",self.HSV_calc)
+        #pressing e will terminate the aquisition 
+        if cv2.waitKey(1) & 0xFF == ord('e'):
+            return self.HSV_calc
+            break
+        #i should probably get rid of the rectangles now 
+
+    def Create_HSV_Bounds(self, self.HSV_calc):
+        
+
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -27,7 +59,7 @@ else:
 while True:
 	# grab the current frame
 	(grabbed, frame) = camera.read()
-
+        
 	# if we are viewing a video and we did not grab a
 	# frame, then we have reached the end of the video
 	if args.get("video") and not grabbed:
@@ -38,7 +70,14 @@ while True:
 	# the speicifed upper and lower boundaries
 	frame = imutils.resize(frame, width = 400)
 	converted = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-	skinMask = cv2.inRange(converted, lower, upper)
+	#This is where I need to put in my calibration module
+        #summon a Calibratus_rex
+        calibrator=Calibratus_rex(frame,converted)
+        calibrator.config_button
+        cal_val=calibrator.Get_pixel_value
+
+        
+        skinMask = cv2.inRange(converted, lower, upper)
 
 	# apply a series of erosions and dilations to the mask
 	# using an elliptical kernel

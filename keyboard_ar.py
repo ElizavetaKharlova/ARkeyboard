@@ -121,6 +121,7 @@ while True:
 
     # Wait for a 25-frame delay and add the new key to the output
     lettr = is_it_pressed()
+    # checks pixle values based on the thresholding algorithm 
     if not lettr == '0':
         i = i + 1
         if (i > 25):
@@ -128,7 +129,7 @@ while True:
             if len(type_word) > 15:
                 type_word = ' '
             i = 0
-    
+ #this is wheere the text gets displayed   
     cv2.putText(img, type_word, (900,300), font, 1, (200,255,255), 2, cv2.LINE_AA)
         
     cv2.imshow('img',img)
