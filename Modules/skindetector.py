@@ -11,35 +11,31 @@ class Calibratus_rex(object):
     def __init__(self,image_1, image_2,):#could also have other arguments in here for initializing)
         self.first_im= image_1
         self.second_im = image_2
-    
-        
-    
-    
-    def conig_button(image_1,image_2):
+
+    def config_button(image_1,image_2):
      cv2.rectangle(image_1,(900,100), (950,150), (255,255,255), 3)
      cv2.rectangle(image_2,(900,100), (950,150), (255,255,255), 3)
     
     def Get_pixle_value(HSV_image):
     #this is the function to return your hsv value 
-        while True 
+        while True: 
         #this is where we sample the pixel 
-        self.HSV_calc=HSV_image[925,125]
-        print("the pixel value is:",self.HSV_calc)
+            self.HSV_calc=HSV_image[925,125]
+            print("the pixel value is:",self.HSV_calc)
         #pressing e will terminate the aquisition 
-        if cv2.waitKey(1) & 0xFF == ord('e'):
-            return self.HSV_calc
-            break
+            if cv2.waitKey(1) & 0xFF == ord('e'):
+                break
+    
+    def Give_pixle_val(self):
+        val = self.HSV_calc
+        return val
+    
         #i should probably get rid of the rectangles now 
-
-    def Create_HSV_Bounds(self, self.HSV_calc):
-        
-
-
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video",
-	help = "path to the (optional) video file")
+        help = "path to the (optional) video file")
 args = vars(ap.parse_args())
 
 # define the upper and lower boundaries of the HSV pixel
@@ -74,7 +70,7 @@ while True:
         #summon a Calibratus_rex
         calibrator=Calibratus_rex(frame,converted)
         calibrator.config_button
-        cal_val=calibrator.Get_pixel_value
+        cal_val=calibrator.
 
         
         skinMask = cv2.inRange(converted, lower, upper)
@@ -91,8 +87,8 @@ while True:
 	skin = cv2.bitwise_and(frame, frame, mask = skinMask)
 
 	# show the skin in the image along with the mask
-	cv2.imshow("images", np.hstack([frame, skin]))
-
+	#cv2.imshow("images", np.hstack([frame, skin]))
+        cv2.imshow(converted)
 	# if the 'q' key is pressed, stop the loop
 	if cv2.waitKey(1) & 0xFF == ord("q"):
 		break
