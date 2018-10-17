@@ -20,6 +20,7 @@
 
 
 ## Imports:
+import time
 import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
 import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
@@ -27,7 +28,7 @@ import ar_keyboard # this is the virtual keyboard
 import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
 import timerClass as GetTimer
 from getScore import getDistance
-# import getTargetWord
+import getTargets
 
 kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
              ('A','S','D','F','G','H','J','K','L','.'),
@@ -45,14 +46,14 @@ def runGameMode(player_name, Keyboard, target, Display):
     while time_rest > 0:
         time_rest = Timer.getRemainingTime
         Display.updateElement(time_rest, flag='time_remaining', mode='play')
-        Display.update(target, flag='Target')
+        Display.updateElement(target, flag='target', mode='play')
 
         video_frame = Display.get_frame()
         letter = Keyboard.detect_key(video_frame['detection'])
         if letter is not None:
             typed_word = typed_word + letter
             index = min(len(typed_word), len(target))
-            score = getDistance(typed_word[index], target[index])
+            score = -1*getDistance(typed_word[index], target[index])
 
         Display.updateElement(typed_word, flag='typed_word', mode='play')
         Display.updateElement(score, flag='score', mode='play')
@@ -63,9 +64,8 @@ def runGameMode(player_name, Keyboard, target, Display):
 #-----------------------------------------------------------------------------------------------------------------------
 def runOnboardingMode(Display):
     # the loop eits if we click escape, that means we go back to RestMode
-    print('Press ESC in order to quit Onboarding')
-    print('enter yout player Name,')
-    print('after you have entered, please press ENTER on the normal keyboard to proccees ')
+    instruction = 'Press ESC to quit. enter your playername, then pres space on the AR keyboard to start playing'
+    Display.updateElement(instruction, flag='instruction', mode='register')
 
     # Initialize the Keyboard, initialize the PlayerName, prompt player to write their name
     Keyboard = ar_keyboard.Keyboard()
@@ -82,8 +82,9 @@ def runOnboardingMode(Display):
     # after name is written, loop terminates pressing Enter on the main keyboard
     while keyboard.is_pressed('esc') != True:
 
+        letter = ''
         # get to enter Name
-        while keyboard.is_pressed('enter') != True:
+        while letter != ' ':
             try:
                 # get letter from Keyboard
                 # pass in video frame
@@ -93,7 +94,7 @@ def runOnboardingMode(Display):
                     pass
                 else:
                     player_name = player_name + letter
-                    Display.update(player_name, flag='PlayerName', mode='register')
+                    Display.update(player_name, flag='player_name', mode='register')
             except:
                 pass
 
@@ -102,7 +103,7 @@ def runOnboardingMode(Display):
             print('Welcome, ', player_name, '!')
 
         print('Get ready for the Game to start!')
-        target = getTargetWord
+        target = getTargets()
         score, time_taken = runGameMode(player_name, Keyboard, target, Display)
         return player_name, score, time_taken
     return player_name, score, time_taken
@@ -111,19 +112,22 @@ def runOnboardingMode(Display):
 #-----------------------------------------------------------------------------------------------------------------------
 # This is also the main loop
 pastPerformance_dict = {'Name': 'Noone yet',
-                        'Score': -99999,
-                        'Time': 99999}
+                        'Score': np.nan,
+                        'Time': np.nan}
 Display = HandleDisplayThings
 while keyboard.is_pressed('esc') != True:
-    print('Press ESC in order to quit completely')
+
+    instruction = 'Press ESC in order to quit completely, press Space to register'
+    Display.updateElement(instruction, flag='instruction', mode='Rest')
 
     # update the leaderboard, display new leaderboard
-    Display.update(pastPerformance_dict, flag='Leaderboard')
+    Display.updateElement(pastPerformance_dict, flag='Leaderboard', mode='Rest')
 
     try: #used try so that if user pressed other than the given key error will not be shown
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
-            print('You pressed space!')
-            print('We wll get need you to register first :-)')
+            instruction = 'get ready to register in ca 3s :-)'
+            Display.updateElement(instruction, flag='instruction', mode='Rest')
+            time.sleep(3)
             player_name, score, time_taken = runOnboardingMode(Display)
         else:
             pass
