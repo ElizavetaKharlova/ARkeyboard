@@ -25,7 +25,7 @@ import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
 import ar_keyboard # this is the virtual keyboard
 import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
-import timer as getTimer
+import timerClass as getTimer
 from getScore import getDistance
 # import getTargetWord
 
@@ -43,12 +43,12 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
     TypedWord = ''
     Score = 0
     while Timer > 0:
-        Time = Timer.gettime
+        Time = Timer.getRemainingTime
         Display.update(Time, flag='TimeRemaining')
         Display.update(Target, flag='Target')
 
         video_frame = Display.get_frame()
-        letter = Keyboard.detect_key(video_frame)
+        letter = Keyboard.detect_key(video_frame['detection'])
         if letter is not None:
             TypedWord = TypedWord + letter
             index = min(len(TypedWord), len(Target))
@@ -73,7 +73,7 @@ def runOnboardingMode(Display):
     # frame in this format:
     # ret, video_frame = cap.read()
     video_frame = Display.get_frame()
-    Keyboard.init_kb_params(kb_layout, video_frame)
+    Keyboard.init_kb_params(kb_layout, video_frame['detection'])
     PlayerName = ''
     Score = np.nan
     Time = np.nan
@@ -88,7 +88,7 @@ def runOnboardingMode(Display):
                 # get letter from Keyboard
                 # pass in video frame
                 video_frame = Display.get_frame()
-                letter = Keyboard.detect_key(video_frame)
+                letter = Keyboard.detect_key(video_frame['detection'])
                 if letter == None:
                     pass
                 else:
