@@ -25,7 +25,7 @@ import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
 import ar_keyboard # this is the virtual keyboard
 import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
-import timer as getTimer
+import timerClass as GetTimer
 from getScore import getDistance
 # import getTargetWord
 
@@ -36,28 +36,28 @@ kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------GAME MODE---------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-def runGameMode(PlayerName, Keyboard, Target, Display):
+def runGameMode(player_name, Keyboard, target, Display):
     # run the while loop while the time
-    Timer = getTimer
-    Time = Timer.getRemainingTime
-    TypedWord = ''
-    Score = 0
-    while Timer > 0:
-        Time = Timer.gettime
-        Display.update(Time, flag='TimeRemaining')
-        Display.update(Target, flag='Target')
+    Timer = GetTimer
+    time_rest = Timer.getRemainingTime
+    typed_word = ''
+    score = 0
+    while time_rest > 0:
+        time_rest = Timer.getRemainingTime
+        Display.updateElement(time_rest, flag='time_remaining', mode='play')
+        Display.update(target, flag='Target')
 
         video_frame = Display.get_frame()
-        letter = Keyboard.detect_key(video_frame)
+        letter = Keyboard.detect_key(video_frame['detection'])
         if letter is not None:
-            TypedWord = TypedWord + letter
-            index = min(len(TypedWord), len(Target))
-            Score = getDistance(TypedWord[index], Target[index])
+            typed_word = typed_word + letter
+            index = min(len(typed_word), len(target))
+            score = getDistance(typed_word[index], target[index])
 
-        Display.update(TypedWord, flag='TypedWord')
-        Display.update(Score, flag='Score')
+        Display.updateElement(typed_word, flag='typed_word', mode='play')
+        Display.updateElement(score, flag='score', mode='play')
 
-    return Score, Time
+    return score, time_rest
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------ONBOARDING MODE------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -73,11 +73,11 @@ def runOnboardingMode(Display):
     # frame in this format:
     # ret, video_frame = cap.read()
     video_frame = Display.get_frame()
-    Keyboard.init_kb_params(kb_layout, video_frame)
-    PlayerName = ''
-    Score = np.nan
-    Time = np.nan
-    GreetingPrinted = False
+    Keyboard.init_kb_params(kb_layout, video_frame['detection'])
+    player_name = ''
+    score = np.nan
+    time_taken = np.nan
+    greeting_printed = False
 
     # after name is written, loop terminates pressing Enter on the main keyboard
     while keyboard.is_pressed('esc') != True:
@@ -88,24 +88,24 @@ def runOnboardingMode(Display):
                 # get letter from Keyboard
                 # pass in video frame
                 video_frame = Display.get_frame()
-                letter = Keyboard.detect_key(video_frame)
+                letter = Keyboard.detect_key(video_frame['detection'])
                 if letter == None:
                     pass
                 else:
-                    PlayerName = PlayerName + letter
-                    Display.update(PlayerName, flag='PlayerName')
+                    player_name = player_name + letter
+                    Display.update(player_name, flag='PlayerName', mode='register')
             except:
                 pass
 
         # If we have a Player name and he has not been greeted yet, then do so!
-        if (GreetingPrinted == False) & (PlayerName is not ''):
-            print('Welcome, ', PlayerName, '!')
+        if (greeting_printed == False) & (player_name is not ''):
+            print('Welcome, ', player_name, '!')
 
         print('Get ready for the Game to start!')
-        Target = getTargetWord
-        Score, Time = runGameMode(PlayerName, Keyboard, Target)
-        return PlayerName, Score, Time
-    return PlayerName, Score, Time
+        target = getTargetWord
+        score, time_taken = runGameMode(player_name, Keyboard, target, Display)
+        return player_name, score, time_taken
+    return player_name, score, time_taken
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------RESTING MODE---------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ while keyboard.is_pressed('esc') != True:
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
             print('You pressed space!')
             print('We wll get need you to register first :-)')
-            PlayerName, Score, Time = runOnboardingMode(Display)
+            player_name, score, time_taken = runOnboardingMode(Display)
         else:
             pass
     except:
