@@ -20,23 +20,28 @@
 
 
 ## Imports:
+<<<<<<< HEAD
 import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
 import HandleDisplayThings # handles OPENCV stuff and the displaying
 import getKeyboardOutput # this is the virtual keyboard
 import getTargetWord
 import getScore
+=======
+import keyboard #Using module keyboard
+
+>>>>>>> parent of a1a2cfc... Updated MasterFile followup
 
 
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------RESTING MODE---------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 # This is also the main loop
-Display = HandleDisplayThings
 while keyboard.is_pressed('esc') != True:
     print('Press ESC in order to quit completely')
 
     # update the leaderboard, display new leaderboard
-    Display.update(pastPerformance_dict, flag='Leaderboard')
+    Leaderboard = getLeaderboard(pastPerformance_dict)
+    Leaderboard.display
 
     try: #used try so that if user pressed other than the given key error will not be shown
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
