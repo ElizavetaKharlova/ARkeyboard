@@ -21,37 +21,37 @@
 
 ## Imports:
 import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
-import HandleDisplayThings # handles OPENCV stuff and the displaying
-import getKeyboardOutput # this is the virtual keyboard
-import getTargetWord
-import getScore
-
+import numpy as np
+# import HandleDisplayThings # handles OPENCV stuff and the displaying
+import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
+import getTimer
+from getScore import getDistance
+# import getTargetWord
 
 #-----------------------------------------------------------------------------------------------------------------------
-#--------------------------------------RESTING MODE---------------------------------------------------------------------
+#-----------------------------------------------GAME MODE---------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-# This is also the main loop
-Display = HandleDisplayThings
-pastPerformance_dict = {'Name': 'Noone yet',
-                        'Score': -99999,
-                        'Time': 99999}
+def runGameMode(PlayerName, Keyboard, Target, Display):
+    # run the while loop while the time
+    Timer = getTimer
+    Time = Timer.getRemainingTime
+    TypedWord = ''
+    Score = 0
+    while Timer > 0:
+        Time = Timer.gettime
+        Display.update(Time, flag='TimeRemaining')
+        Display.update(Target, flag='Target')
 
-while keyboard.is_pressed('esc') != True:
-    print('Press ESC in order to quit completely')
+        letter = Keyboard.read(Display)
+        if letter is not None:
+            TypedWord = TypedWord + letter
+            index = min(len(TypedWord), len(Target))
+            Score = getDistance(TypedWord[index], Target[index])
 
-    # update the leaderboard, display new leaderboard
-    Display.update(pastPerformance_dict, flag='Leaderboard')
+        Display.update(TypedWord, flag='TypedWord')
+        Display.update(Score, flag='Score')
 
-    try: #used try so that if user pressed other than the given key error will not be shown
-        if keyboard.is_pressed('space'):  # if key 'space' is pressed
-            print('You pressed space!')
-            print('We wll get need you to register first :-)')
-            PlayerName, Score, Time = runOnboardingMode()
-        else:
-            pass
-    except:
-        pass
-
+    return Score, Time
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------ONBOARDING MODE------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ def runOnboardingMode():
     # Initialize the Keyboard, initialize the PlayerName, prompt player to write their name
     Keyboard = getKeyboardOutput(Display)
     PlayerName = ''
-    Score = nan
-    Time = nan
+    Score = np.nan
+    Time = np.nan
     GreetingPrinted = False
 
     # after name is written, loop terminates pressing Enter on the main keyboard
@@ -85,7 +85,7 @@ def runOnboardingMode():
                 pass
 
         # If we have a Player name and he has not been greeted yet, then do so!
-        if (GreetingPrinted == False) & (Playername is not ''):
+        if (GreetingPrinted == False) & (PlayerName is not ''):
             print('Welcome, ', PlayerName, '!')
 
         print('Get ready for the Game to start!')
@@ -94,29 +94,34 @@ def runOnboardingMode():
         return PlayerName, Score, Time
     return PlayerName, Score, Time
 #-----------------------------------------------------------------------------------------------------------------------
+#--------------------------------------RESTING MODE---------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+# This is also the main loop
+pastPerformance_dict = {'Name': 'Noone yet',
+                        'Score': -99999,
+                        'Time': 99999}
+Display = HandleDisplayThings
+while keyboard.is_pressed('esc') != True:
+    print('Press ESC in order to quit completely')
+
+    # update the leaderboard, display new leaderboard
+    Display.update(pastPerformance_dict, flag='Leaderboard')
+
+    try: #used try so that if user pressed other than the given key error will not be shown
+        if keyboard.is_pressed('space'):  # if key 'space' is pressed
+            print('You pressed space!')
+            print('We wll get need you to register first :-)')
+            PlayerName, Score, Time = runOnboardingMode()
+        else:
+            pass
+    except:
+        pass
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------GAME MODE---------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-def runGameMode(PlayerName, Keyboard, Target, Display):
-    # run the while loop while the time
-    Timer = getTimer
-    Time = Timer.gettime
-    TypedWord = ''
-    Score = 0
-    while Timer > 0:
-        Time = Timer.gettime
-        Display.update(Time, flag='TimeRemaining')
-        Display.update(Target, flag='Target')
-
-        letter = Keyboard.read(Display)
-        if letter is not none:
-            TypedWord = TypedWord + letter
-            Score = getScore(TypedWord, Target)
-
-        Display.update(TypedWord, flag='TypedWord')
-        Display.update(Score, flag='Score')
-
-    return Score, Time
-
 
 
 
