@@ -23,10 +23,14 @@
 import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
 import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
-import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
+import ar_keyboard # this is the virtual keyboard
 import getTimer
 from getScore import getDistance
 # import getTargetWord
+
+kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
+             ('A','S','D','F','G','H','J','K','L','.'),
+             ('Z','X','C','V','B','N','M',' ','!','?'))
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------GAME MODE---------------------------------------------------------------
@@ -62,7 +66,11 @@ def runOnboardingMode():
     print('after you have entered, please press ENTER on the normal keyboard to proccees ')
 
     # Initialize the Keyboard, initialize the PlayerName, prompt player to write their name
-    Keyboard = getKeyboardOutput(Display)
+    Keyboard = ar_keyboard.Keyboard()
+    #Display.getframe()
+    # frame in this format:
+    # ret, video_frame = cap.read()
+    Keyboard.init_kb_params(kb_layout, video_frame)
     PlayerName = ''
     Score = np.nan
     Time = np.nan
@@ -75,7 +83,8 @@ def runOnboardingMode():
         while keyboard.is_pressed('enter') != True:
             try:
                 # get letter from Keyboard
-                letter = Keyboard.read()
+                # pass in video frame
+                letter = Keyboard.detect_key()
                 if letter == None:
                     pass
                 else:
