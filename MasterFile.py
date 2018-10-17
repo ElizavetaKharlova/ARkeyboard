@@ -32,6 +32,10 @@ import getScore
 #-----------------------------------------------------------------------------------------------------------------------
 # This is also the main loop
 Display = HandleDisplayThings
+pastPerformance_dict = {'Name': 'Noone yet',
+                        'Score': -99999,
+                        'Time': 99999}
+
 while keyboard.is_pressed('esc') != True:
     print('Press ESC in order to quit completely')
 
@@ -114,7 +118,5 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
     return Score, Time
 
 
-pastPerformance_dict = {'Name': 'Noone yet',
-                        'Score': -99999,
-                        'Time': 99999}
+
 
