@@ -23,10 +23,15 @@
 import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
 import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
+import ar_keyboard # this is the virtual keyboard
 import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
-import getTimer
+import timer as getTimer
 from getScore import getDistance
 # import getTargetWord
+
+kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
+             ('A','S','D','F','G','H','J','K','L','.'),
+             ('Z','X','C','V','B','N','M',' ','!','?'))
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------GAME MODE---------------------------------------------------------------
@@ -42,7 +47,8 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
         Display.update(Time, flag='TimeRemaining')
         Display.update(Target, flag='Target')
 
-        letter = Keyboard.read(Display)
+        video_frame = Display.get_frame()
+        letter = Keyboard.detect_key(video_frame)
         if letter is not None:
             TypedWord = TypedWord + letter
             index = min(len(TypedWord), len(Target))
@@ -55,14 +61,19 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------ONBOARDING MODE------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-def runOnboardingMode():
+def runOnboardingMode(Display):
     # the loop eits if we click escape, that means we go back to RestMode
     print('Press ESC in order to quit Onboarding')
     print('enter yout player Name,')
     print('after you have entered, please press ENTER on the normal keyboard to proccees ')
 
     # Initialize the Keyboard, initialize the PlayerName, prompt player to write their name
-    Keyboard = getKeyboardOutput(Display)
+    Keyboard = ar_keyboard.Keyboard()
+    #Display.getframe()
+    # frame in this format:
+    # ret, video_frame = cap.read()
+    video_frame = Display.get_frame()
+    Keyboard.init_kb_params(kb_layout, video_frame)
     PlayerName = ''
     Score = np.nan
     Time = np.nan
@@ -75,7 +86,9 @@ def runOnboardingMode():
         while keyboard.is_pressed('enter') != True:
             try:
                 # get letter from Keyboard
-                letter = Keyboard.read()
+                # pass in video frame
+                video_frame = Display.get_frame()
+                letter = Keyboard.detect_key(video_frame)
                 if letter == None:
                     pass
                 else:
@@ -111,7 +124,7 @@ while keyboard.is_pressed('esc') != True:
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
             print('You pressed space!')
             print('We wll get need you to register first :-)')
-            PlayerName, Score, Time = runOnboardingMode()
+            PlayerName, Score, Time = runOnboardingMode(Display)
         else:
             pass
     except:
