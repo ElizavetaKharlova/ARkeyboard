@@ -21,19 +21,23 @@
 
 ## Imports:
 import keyboard #Using module keyboard
-
+import HandleDisplayThings
+import getKeyboardOutput
+import Leaderboard
+import getTargetWord
+import getScore
 
 
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------RESTING MODE---------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 # This is also the main loop
+Display = HandleDisplayThings
 while keyboard.is_pressed('esc') != True:
     print('Press ESC in order to quit completely')
 
     # update the leaderboard, display new leaderboard
-    Leaderboard = getLeaderboard(pastPerformance_dict)
-    Leaderboard.display
+    Display.update(pastPerformance_dict, flag='Leaderboard')
 
     try: #used try so that if user pressed other than the given key error will not be shown
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
