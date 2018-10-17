@@ -13,18 +13,47 @@ class Display():
         self.cap.release()
         return None
     def readframe(self):
-        self.ret, self.image = cap.read()
-        return 
-    def updateElement(self, elementFlag, elementValues):
+        # This function gets the frames from the capture feed 
+        ret, image = cap.read()
+        img = image.copy()
+        img = cv2.flip(img,1)
+        det = img.copy()
+
+        self.frames ={
+            'detection' : det,
+            'image' : img,
+        }
+               
+         return self.frames
+
+
+    def createElement(self, **element)
+        # This needs to be run the first time you instantiate a element 
+
+
+    def updateElement(self, **element):
+        # 
+        
         #check the element flag, then do things based on the value of the flag 
-
-
+        # 1 = keyboard
+        # 2 = Target 
+        # 3 = Timer
+        
+        eleType = element.get('Element Type')
+        
         return
-    def readElement(self, elementFlag):
+    def readElement(self, elementFlag, elementName):
         #check the element flag, then get the values of the element that is being asked 
-        
+        # TODO: How should I store the objects that are on the displa
         
         return
+
+    element = {
+        'Element Type' : 
+        'Element Name' :
+        'Element Value':
+
+    }
 
     #img = image.copy()
     #img = cv2.flip(img,1)

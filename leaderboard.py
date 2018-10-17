@@ -9,6 +9,4 @@ class Leaderboard:
         self.datafolder = Path("../data/")
         self.file_to_open = self.datafolder / ""
 
-    def displayElement(elementType, element):
-
-        # element type is a string 
+   
