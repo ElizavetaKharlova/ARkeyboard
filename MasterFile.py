@@ -24,7 +24,8 @@ import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
 import numpy as np
 # import HandleDisplayThings # handles OPENCV stuff and the displaying
 import ar_keyboard # this is the virtual keyboard
-import getTimer
+import keyboard_ar as getKeyboardOutput # this is the virtual keyboard
+import timerClass as getTimer
 from getScore import getDistance
 # import getTargetWord
 
@@ -42,11 +43,12 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
     TypedWord = ''
     Score = 0
     while Timer > 0:
-        Time = Timer.gettime
+        Time = Timer.getRemainingTime
         Display.update(Time, flag='TimeRemaining')
         Display.update(Target, flag='Target')
 
-        letter = Keyboard.read(Display)
+        video_frame = Display.get_frame()
+        letter = Keyboard.detect_key(video_frame['detection'])
         if letter is not None:
             TypedWord = TypedWord + letter
             index = min(len(TypedWord), len(Target))
@@ -59,7 +61,7 @@ def runGameMode(PlayerName, Keyboard, Target, Display):
 #-----------------------------------------------------------------------------------------------------------------------
 #--------------------------------------------ONBOARDING MODE------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
-def runOnboardingMode():
+def runOnboardingMode(Display):
     # the loop eits if we click escape, that means we go back to RestMode
     print('Press ESC in order to quit Onboarding')
     print('enter yout player Name,')
@@ -70,7 +72,8 @@ def runOnboardingMode():
     #Display.getframe()
     # frame in this format:
     # ret, video_frame = cap.read()
-    Keyboard.init_kb_params(kb_layout, video_frame)
+    video_frame = Display.get_frame()
+    Keyboard.init_kb_params(kb_layout, video_frame['detection'])
     PlayerName = ''
     Score = np.nan
     Time = np.nan
@@ -84,7 +87,8 @@ def runOnboardingMode():
             try:
                 # get letter from Keyboard
                 # pass in video frame
-                letter = Keyboard.detect_key()
+                video_frame = Display.get_frame()
+                letter = Keyboard.detect_key(video_frame['detection'])
                 if letter == None:
                     pass
                 else:
@@ -120,7 +124,7 @@ while keyboard.is_pressed('esc') != True:
         if keyboard.is_pressed('space'):  # if key 'space' is pressed
             print('You pressed space!')
             print('We wll get need you to register first :-)')
-            PlayerName, Score, Time = runOnboardingMode()
+            PlayerName, Score, Time = runOnboardingMode(Display)
         else:
             pass
     except:
