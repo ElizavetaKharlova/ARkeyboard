@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib
 import math
 
-def Keyboard():
+class Keyboard():
     def __init__(self):
         self.layout = None
         self.layout_flat = ('Q','W','E','R','T','Y','U','I','O','P', 'A','S','D','F','G','H','J','K','L','.','Z','X','C','V','B','N','M',' ','!','?')
@@ -14,19 +14,20 @@ def Keyboard():
             'k_dim_h': None,
             'k_dim_v': None
         }
-        self.detector {
+        self.detector = {
             'active_key': None,
             'persistency': 0,
             'threshold': 12
         }
 
     def init_kb_params(self, layout, video_cap_frame):
-        feed_height, feed_width = video_cap_frame.shape
+        feed_height, feed_width, channels = video_cap_frame.shape
 
-        kb_shape = np.shape(kb_layout)
+        kb_shape = np.shape(layout)
         k_dim_h = math.floor(feed_width/(kb_shape[1]+2))
         k_dim_v = k_dim_h
 
+        self.layout = layout
         self.graphic['kb_shape'] = kb_shape
         self.graphic['k_dim_h'] = k_dim_h
         self.graphic['k_dim_v'] = k_dim_v
@@ -43,8 +44,8 @@ def Keyboard():
 
         return {
             'key_index': key_index,
-            'k_start_coords': (key_start_x, key_start_y)
-            'k_end_coords': (key_end_x, key_end_y)
+            'k_start_coords': (key_start_x, key_start_y),
+            'k_end_coords': (key_end_x, key_end_y),
             'l_coords': (math.floor(key_start_x + self.graphic['k_dim_h']/2), 
                          math.floor(key_start_y + self.graphic['k_dim_v']/2))
         }
@@ -62,7 +63,7 @@ def Keyboard():
             # step 2: find out how much orange is in the key slice
             hsv = cv2.cvtColor(key_slice, cv2.COLOR_BGR2HSV)
             mask = cv2.inRange(hsv, (65, 60, 60), (80, 255, 255))
-            detection_factor = cv2.countNonZero(mask) / (kb_params[2] * kb_params[3])
+            detection_factor = cv2.countNonZero(mask) / (self.graphic['k_dim_h'] * self.graphic['k_dim_v'])
             detection_factors[letter] = detection_factor
 
         # step 3: rank keys
@@ -79,4 +80,5 @@ def Keyboard():
         if self.detector['persistency'] >= self.detector['threshold']:
             self.detector['persistency'] = 0
             return self.detector['active_key']
-        else return None
+        else:
+             return None
