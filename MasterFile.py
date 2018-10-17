@@ -20,10 +20,9 @@
 
 
 ## Imports:
-import keyboard #Using module keyboard
-import HandleDisplayThings
-import getKeyboardOutput
-import Leaderboard
+import keyboard #Using module keyboard ... THIS IS NOT THE VIRTUALKEYBOARD
+import HandleDisplayThings # handles OPENCV stuff and the displaying
+import getKeyboardOutput # this is the virtual keyboard
 import getTargetWord
 import getScore
 
