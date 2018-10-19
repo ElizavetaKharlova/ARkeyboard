@@ -1,8 +1,9 @@
-import Display
+
 import cv2
+import display
 import ar_keyboard
 
-disp = Display.Display()
+disp = display.Display()
 disp.read_camera()
 
 kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
