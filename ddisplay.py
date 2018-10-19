@@ -66,10 +66,15 @@ class Display():
     def draw_timer(self, rt):
         # boarder_thickness = 3
         start_location = (int(self.frames['display'].shape[1]*0.46), 80)
+        start_location_t = (int(self.frames['display'].shape[1]*0.4), int(self.frames['display'].shape[0]*0.2))
         # stop_location = (60, 100)
         font = cv2.FONT_HERSHEY_COMPLEX 
         # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
-        cv2.putText(self.frames['display'], rt, start_location,font, 3, (0, 0, 255), 1, cv2.LINE_AA)
+#        cv2.putText(self.frames['display'], rt, start_location,font, 3, (0, 0, 255), 1, cv2.LINE_AA)
+        if int(rt) is not 0:
+            cv2.putText(self.frames['display'], rt, start_location,font, 3, (0, 0, 255), 1, cv2.LINE_AA)
+        else:
+            cv2.putText(self.frames['display'], "Time is up!", start_location_t,font, 2, (0, 0, 255), 1, cv2.LINE_AA)
     
     def draw_targets(self, game):
         next_char = game.targets[game.w_index]
