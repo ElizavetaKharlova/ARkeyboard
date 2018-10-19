@@ -70,7 +70,7 @@ class Keyboard():
         keys_ranked = sorted(detection_factors, key=detection_factors.get, reverse=True)
 
         # step 4: highest ranked key is the key
-        active_key = keys_ranked[0]
+        active_key = keys_ranked[0] if detection_factors[keys_ranked[0]] >= 0.25 else None
         if self.detector['active_key'] == active_key:
             self.detector['persistency'] += 1
         else:
