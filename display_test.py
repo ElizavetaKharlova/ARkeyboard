@@ -33,7 +33,7 @@ while True:
                 pass
             else:
                 targets = game.get_next()
-                if remaining_time >= 0:
+                if remaining_time > 0:
                     score += 1
                     # print(active_key, score)
 
