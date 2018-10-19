@@ -34,7 +34,7 @@ class Display():
          return self.frames
 
 
-    def createElement(self, elementType, elementName, elementValue , elementPositon, elementMode)
+    def createElement(self, elementType, elementValue , elementPositon, elementMode)
         # This needs to be run the first time you instantiate a element 
         # Fill the element values and then append it to the elementArray 
         newElement = {
@@ -44,13 +44,32 @@ class Display():
         'Position' : elementPositon
         'mode' : elementMode
      }
+
+     cv2.rectangle(self.frames('image'),(xTL, yTL), (xBR,yBR), (255,255,255),3) 
         self.elementArray.append(newElement)
     
+
+    def checkCurrentElements(self, flag):
+        for i in range(0, len(self.elementArray)):
+            if self.elementArray[i].get('Type') == flag:
+                #this means that there is already a element in that place 
+                return True
+            else: 
+                #return the value o
+                return False
     
-    def updateElement(self, value, flag , mode):
+    def updateElement(self, value, flag , mode, position = None):
         # 
         if flag == 'timer':
             #update timer  function 
+            if self.checkCurrentElements(flag) == True:
+                # update the element with the new value
+                cv2.rectangle(self.frames('image'),(xTL, yTL), (xBR,yBR), (255,255,255),3) 
+                cv2.putText(self.frames('image', value.tostring, ))
+            else: 
+                #create the element and then update it
+                self.createElement(flag, value, position, mode)
+                # display the value 
 
         elif flag == 'keyboard':
             # display keyboard 
