@@ -24,6 +24,7 @@ while True:
     disp.read_camera()
     kb.detect_key(disp.frames['detection'])
     active_key = kb.detector['active_key']
+    remaining_time = max(0, timer.getRemainingTime())
 
     if active_key != last_active_key:
         last_active_key = active_key
@@ -32,14 +33,15 @@ while True:
                 pass
             else:
                 targets = game.get_next()
-                score += 1
-                # print(active_key, score)
+                if remaining_time >= 0:
+                    score += 1
+                    # print(active_key, score)
 
     # print(timer.getRemainingTime())
 
     disp.draw_keyboard(kb)
     disp.draw_targets(game)
-    disp.draw_timer(str(timer.getRemainingTime()))
+    disp.draw_timer(str(remaining_time))
     disp.draw_score(score)
 
     cv2.imshow('camera',disp.frames['display'])
