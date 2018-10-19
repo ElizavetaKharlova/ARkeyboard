@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class timer:
+class Timer:
     
     '''
         This class starts the timer and returns the remaining time.
@@ -19,4 +19,3 @@ class timer:
         timeRemaining = self.totalSec - timeElapsed
         
         return timeRemaining
-

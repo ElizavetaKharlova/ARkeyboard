@@ -15,9 +15,10 @@ class Keyboard():
             'k_dim_v': None
         }
         self.detector = {
+            'last_active_key': None,
             'active_key': None,
             'persistency': 0,
-            'threshold': 12
+            'threshold': 15
         }
 
     def init_kb_params(self, layout, video_cap_frame):
@@ -70,7 +71,7 @@ class Keyboard():
         keys_ranked = sorted(detection_factors, key=detection_factors.get, reverse=True)
 
         # step 4: highest ranked key is the key
-        active_key = keys_ranked[0] if detection_factors[keys_ranked[0]] >= 0.25 else None
+        active_key = keys_ranked[0] if detection_factors[keys_ranked[0]] >= 0.420 else None
         if self.detector['active_key'] == active_key:
             self.detector['persistency'] += 1
         else:

@@ -61,16 +61,16 @@ class Display():
         
         for row in range(kb.graphic['kb_shape'][0]):
             for col in range(kb.graphic['kb_shape'][1]):
-                draw_key(kb, kb.layout[row][col], self.frames['camera'])
+                draw_key(kb, kb.layout[row][col], self.frames['display'])
 
 
-    def draw_timer(self, rt, frame):
-        boarder_thickness = 3
-        start_location = (10, 50)
-        stop_location = (60 , 100)
+    def draw_timer(self, rt):
+        # boarder_thickness = 3
+        start_location = (590, 30)
+        # stop_location = (60, 100)
         font = cv2.FONT_HERSHEY_COMPLEX 
-        cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
-        cv2.putText(frame, rt, start_location + 10,font, 0.5, (200,255, 255), 1, cv2.LINE_AA)
+        # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
+        cv2.putText(self.frames['display'], rt, start_location,font, 1, (0, 0, 255), 1, cv2.LINE_AA)
     
     
     def combine_elements(self):
