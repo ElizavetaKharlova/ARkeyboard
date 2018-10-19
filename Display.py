@@ -1,7 +1,7 @@
 import cv2 
 import numpy as np
 import ar_keyboard
-
+import timer
 
 #this is the class for the display:
 class Display():
@@ -46,51 +46,7 @@ class Display():
     def element_exists(self, element_type):
         return element_type in self.elements
 
-        # for i in range(0, len(self.elementArray)):
-        #     if self.elementArray[i].get('Type') == flag:
-        #         #this means that there is already a element in that place 
-        #         return True
-        #     else: 
-        #         #return the value o
-        #         return False
-    
-    # def update_element(self, element_type, element_value, element_position, element_mode):
-    #     # 
-    #     if element_type == 'timer':
-    #         #update timer  function 
-    #         if self.checkCurrentElements(flag) == True:
-    #             # update the element with the new value
-    #             cv2.rectangle(self.frames('display'),(xTL, yTL), (xBR,yBR), (255,255,255),3) 
-    #             cv2.putText(self.frames('display', value.tostring, ))
-    #         else: 
-    #             #create the element and then update it
-    #             self.createElement(flag, value, position, mode)
-    #             # display the value 
 
-    #     elif element_type == 'keyboard':
-    #         # display keyboard 
-    #         pass
-
-    #     elif element_type == 'target':
-    #         # display target phrase? word??
-    #         # TODO: try 
-    #         pass
-
-    #     elif element_type == 'leaderboard':
-    #         # display leaderboard
-    #         pass
-
-    #     elif element_type == 'user input':
-    #         # display the user key
-    #         pass
-
-    #     elif element_type == 'score':
-    #         # display the score 
-    #         #check the element flag, then do things based on the value of the flag 
-    #         # 1 = keyboard
-    #         # 2 = Target 
-    #         # 3 = Timer
-    #         pass
 
     def draw_keyboard(self, kb):
         # draws keyboard on the camera frame
@@ -108,13 +64,14 @@ class Display():
                 draw_key(kb, kb.layout[row][col], self.frames['camera'])
 
 
-    def readElement(self, elementFlag, elementName):
-        #check the element flag, then get the values of the element that is being asked 
-        # TODO: How should I store the objects that are on the displa
-        
-        # the only elements that you will need to read will be keyboard -- its already detecting 
-        #  
-        return
-
+    def draw_timer(self, rt, frame):
+        boarder_thickness = 3
+        start_location = (10, 50)
+        stop_location = (60 , 100)
+        font = cv2.FONT_HERSHEY_COMPLEX 
+        cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
+        cv2.putText(frame, rt, start_location + 10,font, 0.5, (200,255, 255), 1, cv2.LINE_AA)
+    
+    
     def combine_elements(self):
         pass
