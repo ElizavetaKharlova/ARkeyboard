@@ -1,11 +1,13 @@
 import cv2
-import display
+import ddisplay
 import ar_keyboard
 import timer
+import game
 
-disp = display.Display()
+disp = ddisplay.Display()
 timer = timer.Timer()
 disp.read_camera()
+game = game.Game()
 
 kb_layout = (('Q','W','E','R','T','Y','U','I','O','P'),
              ('A','S','D','F','G','H','J','K','L','.'),
@@ -15,21 +17,30 @@ kb.init_kb_params(kb_layout, disp.frames['detection'])
 
 last_active_key = None
 
+score = 0
+targets = game.get_next()
+
 while True:
     disp.read_camera()
     kb.detect_key(disp.frames['detection'])
-
     active_key = kb.detector['active_key']
 
     if active_key != last_active_key:
         last_active_key = active_key
         if active_key is not None:
-            print(active_key)
+            if active_key.lower() != targets['letter'].lower():
+                pass
+            else:
+                targets = game.get_next()
+                score += 1
+                # print(active_key, score)
 
     # print(timer.getRemainingTime())
 
     disp.draw_keyboard(kb)
+    disp.draw_targets(game)
     disp.draw_timer(str(timer.getRemainingTime()))
+    disp.draw_score(score)
 
     cv2.imshow('camera',disp.frames['display'])
     # cv2.imshow('display',disp.frames['display'])

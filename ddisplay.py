@@ -72,6 +72,19 @@ class Display():
         # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
         cv2.putText(self.frames['display'], rt, start_location,font, 1, (0, 0, 255), 1, cv2.LINE_AA)
     
+    def draw_targets(self, game):
+        next_char = game.targets[game.w_index]
+        next_sentence = game.targets[game.w_index+1:game.w_index+20]
+        start_location = (30, 30)
+        font = cv2.FONT_HERSHEY_COMPLEX 
+        cv2.putText(self.frames['display'], next_char+next_sentence, start_location,font, 1, (255, 255, 255), 1, cv2.LINE_AA)
     
+    def draw_score(self, score):
+        start_location = (590, 360)
+        font = cv2.FONT_HERSHEY_COMPLEX 
+        # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
+        cv2.putText(self.frames['display'], str(score), start_location,font, 1, (255, 255, 255), 1, cv2.LINE_AA)
+        
+
     def combine_elements(self):
         pass
