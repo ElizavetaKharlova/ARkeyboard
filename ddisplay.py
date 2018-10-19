@@ -19,7 +19,6 @@ class Display():
         # This function gets the frames from the capture feed 
         ret, image = self.cap.read()
         img = cv2.flip(image.copy(), 1)
-
         self.frames ={
             'camera' : img,
             'detection' : img.copy(),
@@ -66,24 +65,26 @@ class Display():
 
     def draw_timer(self, rt):
         # boarder_thickness = 3
-        start_location = (590, 30)
+        start_location = (int(self.frames['display'].shape[1]*0.46), 80)
         # stop_location = (60, 100)
         font = cv2.FONT_HERSHEY_COMPLEX 
         # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
-        cv2.putText(self.frames['display'], rt, start_location,font, 1, (0, 0, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.frames['display'], rt, start_location,font, 3, (0, 0, 255), 1, cv2.LINE_AA)
     
     def draw_targets(self, game):
         next_char = game.targets[game.w_index]
-        next_sentence = game.targets[game.w_index+1:game.w_index+20]
-        start_location = (30, 30)
+        next_sentence = game.targets[game.w_index+1:game.w_index+25]
+        start_location = (30, 70)
         font = cv2.FONT_HERSHEY_COMPLEX 
         cv2.putText(self.frames['display'], next_char+next_sentence, start_location,font, 1, (255, 255, 255), 1, cv2.LINE_AA)
     
     def draw_score(self, score):
-        start_location = (590, 360)
-        font = cv2.FONT_HERSHEY_COMPLEX 
+        start_location = (int(self.frames['display'].shape[1]*0.85), 70)
+        start_location_text = (int(self.frames['display'].shape[1]*0.75)-100, 70)
+        font = cv2.FONT_HERSHEY_COMPLEX
+        cv2.putText(self.frames['display'], "Your score:", start_location_text,font, 1, (255, 255, 255), 1, cv2.LINE_AA)
         # cv2.rectangle(frame, start_location,stop_location,(255,255,255), boarder_thickness)
-        cv2.putText(self.frames['display'], str(score), start_location,font, 1, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(self.frames['display'], str(score), start_location,font, 2, (255, 255, 255), 1, cv2.LINE_AA)
         
 
     def combine_elements(self):
