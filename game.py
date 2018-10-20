@@ -10,4 +10,4 @@ class Game():
     #    print(self.targets[self.w_index])
        return {
             'letter': self.targets[self.w_index],
-            'display': self.targets[self.w_index+1:self.w_index+20]}
+            'display': self.targets[self.w_index+1:self.w_index+25]}
