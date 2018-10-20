@@ -8,7 +8,7 @@ class Timer:
     
     def __init__(self):
         self.nSecond = 0
-        self.totalSec = 30
+        self.totalSec = 45
         self.startTime = datetime.now()
         self.timeElapsed = 0.0
 
